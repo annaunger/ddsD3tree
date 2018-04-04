@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+<style>
+
+.node circle {
+  fill: #cde4d2;
+  stroke: #6aae7a;
+  stroke-width: 3px;
+}
+
+.node text {
+  font: 12px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 2px;
+}
+
+</style>
+
+<body>
+
+<!-- load the d3.js library --> 
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var treeData =
+  {
+    "name": "DDS",
+    "children": [
+
+      { 
+        "name": "Data Landscape",
+        "children": [
+          { "name": "Knowledge",
+          "children": [
+          { "name": "Structure of the web, and the roles of HTML, CSS, Javascript & cookies"},
+          { "name": "Understand pro’s & con’s with different ways of sourcing data"},
+          { "name": "How to avoid common mistakes when drawing conclusions from data"},
+          { "name": "Different ways of how the science of behavioral economics can be applied to shape design, and drive behavior change"},
+          { "name": "Basic theory & terminology when working with statistics"}
+          ] 
+        },
+          { "name": "Skills",
+          "children": [
+          { "name": "Visualize data using HTML, CSS & JavaScript"},
+          { "name": "Implement a tracking code on a website"},
+          { "name": "Create an interactive website using HTML, CSS, & JavaScript"}
+          ]
+        }
+        ]
+      },
+
+      { 
+        "name": "Monitor & Report",
+        "children": [
+          { "name": "Knowledge",
+          "children": [
+          { "name": "Understand users online behaviour with different tools and techniques"}
+          ] 
+        },
+          { "name": "Skills",
+          "children": [
+          { "name": "Handling common web analytics tools for optimization and conversion e.g. Google Analytics, Google Tagmanager, HotJar, Optimizely etc"},
+          { "name": "Evaluate and report the performance of a website, campaign or outcome of a test"}
+          ]
+        },
+          { "name": "Competence",
+          "children": [
+          { "name": "Analyze and draw conclusions from data"}
+          ]
+           }
+        ]
+      },
+
+      { 
+        "name": "Organic Growth",
+        "children": [
+          { "name": "Knowledge",
+          "children": [
+          { "name": "Different work processes, management styles and group dynamics"}
+          ] 
+        },
+          { "name": "Skills",
+          "children": [
+          { "name": "Work collaboratively on a project using GitHub"},
+          { "name": "Apply SEO best practices to increase traffic to a website"},
+          { "name": "Use data in order to create effective communication within earned media (Facebook page, twitter brand account, Instagram, LinkedIn etc)"}
+          ]
+        }
+        ]
+      },
+
+      { "name": "Presentation & Communication",
+        "children": [
+          { "name": "Competence",
+          "children": [
+          { "name": "Develop and/or verify business concepts or campaigns using data"},
+          { "name": "Perform effective presentations adapted to the attending audience"},
+          { "name": "Facilitate workshops to explore challenges and possibilities"}
+          ]
+           }
+        ]
+      },
+
+      { 
+        "name": "Data Driven Marketing",
+        "children": [
+          { "name": "Knowledge",
+          "children": [
+          { "name": "Current trends and terminology within online marketing"}
+          ] 
+        },
+          { "name": "Skills",
+          "children": [
+          { "name": "Set up an E-mail marketing campaign or a newsletter strategy"},
+          { "name": "Create a SEM Campaign"},
+          { "name": "Use retargeting to convert users"},
+          { "name": "Use targeted advertising within Social Networks"}
+          ]
+        }
+        ]
+      },
+
+      { 
+        "name": "Dynamic Data",
+        "children": [
+          { "name": "Knowledge",
+          "children": [
+          { "name": "Understand the principles of machine learning"},
+          { "name": "Techniques and models for producing predictions and updating the probability over time (Frequentist vs Bayesian etc) "}
+          ]  
+        },
+          { "name": "Skills",
+          "children": [
+          { "name": "Collect <a href=\"https://www.socialbakers.com/statistics/youtube/channels/sweden/community/page-1-5/\">data</a> through scraping or by using an API, and store the data in a database",
+            "link":  "http://www.bing.com"
+        },
+          { "name": "Create a custom dashboard using an API (Google Analytics, Twitter, Open data etc)"},
+          { "name": "Create interactive and engaging data visualizations (using D3, or similar techniques)"}
+          ] 
+        }
+        ]
+      },
+
+         { 
+        "name": "Business Optimization",
+        "children": [
+          { "name": "Knowledge",
+          "children": [
+          { "name": "How to make optimizations to a website that are aligned with the underlying business goals"}
+          ]
+           },
+          { "name": "Skills",
+          "children": [
+          { "name": "Set up goals & funnels to track user behaviour"},
+          { "name": "Implement A/B testing to improve a website or service"}
+          ]
+           },
+          { "name": "Competence",
+          "children": [
+          { "name": "Forming hypotheses and using data to judge their validity"},
+          { "name": "Create effective visual presentations"}
+          ]
+           }
+        ]
+      },
+
+      { 
+        "name": "Deep Learning",
+        "children": [
+          { "name": "Competence",
+          "children": [
+          { "name": "Manage your own learning need for a continued professional development"},
+          { "name": "Facilitate workshops to generate and capture ideas"}
+          ]
+           }
+        ]
+      },
+
+      { 
+        "name": "Data Driven Organisation",
+        "children": [
+          { "name": "Competence",
+          "children": [
+          { "name": "Analyze and evaluate a online business or campaign"},
+          { "name": "Set goals and identify KPI’s to drive a business strategy"}
+          ]
+           }
+        ]
+      },
+
+      { 
+        "name": "Internship",
+        "children": [
+          { "name": "Competence",
+          "children": [
+          { "name": "Manage your own learning need for a continued professional development"}
+          ]
+           }
+        ]
+      },
+
+      { 
+        "name": "Portfolio",
+        "children": [
+          { "name": "Competence",
+          "children": [
+          { "name": "Manage your own learning need for a continued professional development"}
+          ] }
+        ]
+      },
+    ]
+  
+  
+};
+
+// Set the dimensions and margins of the diagram
+var margin = {top: 20, right: 50, bottom: 30, left: 50},
+    width = 2060 - margin.left - margin.right,
+    height = 1000 - margin.top - margin.bottom;
+
+// append the svg object to the body of the page
+// appends a 'group' element to 'svg'
+// moves the 'group' element to the top left margin
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate("
+          + margin.left + "," + margin.top + ")");
+
+var i = 0,
+    duration = 750,
+    root;
+
+// declares a tree layout and assigns the size
+var treemap = d3.tree().size([height, width]);
+
+// Assigns parent, children, height, depth
+root = d3.hierarchy(treeData, function(d) { return d.children; });
+root.x0 = height / 2;
+root.y0 = 0;
+
+// Collapse after the second level
+root.children.forEach(collapse);
+
+update(root);
+
+// Collapse the node and all it's children
+function collapse(d) {
+  if(d.children) {
+    d._children = d.children
+    d._children.forEach(collapse)
+    d.children = null
+  }
+}
+
+function update(source) {
+
+  // Assigns the x and y position for the nodes
+  var treeData = treemap(root);
+
+  // Compute the new tree layout.
+  var nodes = treeData.descendants(),
+      links = treeData.descendants().slice(1);
+
+  // Normalize for fixed-depth.
+  nodes.forEach(function(d){ d.y = d.depth * 180});
+
+  // ****************** Nodes section ***************************
+
+  // Update the nodes...
+  var node = svg.selectAll('g.node')
+      .data(nodes, function(d) {return d.id || (d.id = ++i); });
+
+  // Enter any new modes at the parent's previous position.
+  var nodeEnter = node.enter().append('g')
+      .attr('class', 'node')
+      .attr("transform", function(d) {
+        return "translate(" + source.y0 + "," + source.x0 + ")";
+    })
+    .on('click', click);
+
+  // Add Circle for the nodes
+  nodeEnter.append('circle')
+      .attr('class', 'node')
+      .attr('r', 1e-6)
+      .style("fill", function(d) {
+          return d._children ? "lightsteelblue" : "#fff";
+      });
+
+  nodeEnter.append("a")
+    .attr("xlink:href", function(d) { return d.path; })
+    .append("text")
+    .attr("class", "clickable")
+    .attr("y", 16)
+    .attr("x", function (d) { return d.children || d._children ? -10 : 10; })
+    .attr("text-anchor", function(d) { return d.children || d._children ? "end" : "start"; })
+    .text(function(d) { return d.label; })
+
+  // Add labels for the nodes
+  nodeEnter.append('text')
+      .attr("dy", ".35em")
+      .attr("x", function(d) {
+          return d.children || d._children ? -13 : 13;
+      })
+      .attr("text-anchor", function(d) {
+          return d.children || d._children ? "end" : "start";
+      })
+      .text(function(d) { return d.data.name; });
+
+  // UPDATE
+  var nodeUpdate = nodeEnter.merge(node);
+
+  // Transition to the proper position for the node
+  nodeUpdate.transition()
+    .duration(duration)
+    .attr("transform", function(d) { 
+        return "translate(" + d.y + "," + d.x + ")";
+     });
+
+  // Update the node attributes and style
+  nodeUpdate.select('circle.node')
+    .attr('r', 10)
+    .style("fill", function(d) {
+        return d._children ? "lightsteelblue" : "#fff";
+    })
+    .attr('cursor', 'pointer');
+
+
+  // Remove any exiting nodes
+  var nodeExit = node.exit().transition()
+      .duration(duration)
+      .attr("transform", function(d) {
+          return "translate(" + source.y + "," + source.x + ")";
+      })
+      .remove();
+
+  // On exit reduce the node circles size to 0
+  nodeExit.select('circle')
+    .attr('r', 1e-6);
+
+  // On exit reduce the opacity of text labels
+  nodeExit.select('text')
+    .style('fill-opacity', 1e-6);
+
+  // ****************** links section ***************************
+
+  // Update the links...
+  var link = svg.selectAll('path.link')
+      .data(links, function(d) { return d.id; });
+
+  // Enter any new links at the parent's previous position.
+  var linkEnter = link.enter().insert('path', "g")
+      .attr("class", "link")
+      .attr('d', function(d){
+        var o = {x: source.x0, y: source.y0}
+        return diagonal(o, o)
+      });
+
+  // UPDATE
+  var linkUpdate = linkEnter.merge(link);
+
+  // Transition back to the parent element position
+  linkUpdate.transition()
+      .duration(duration)
+      .attr('d', function(d){ return diagonal(d, d.parent) });
+
+  // Remove any exiting links
+  var linkExit = link.exit().transition()
+      .duration(duration)
+      .attr('d', function(d) {
+        var o = {x: source.x, y: source.y}
+        return diagonal(o, o)
+      })
+      .remove();
+
+  // Store the old positions for transition.
+  nodes.forEach(function(d){
+    d.x0 = d.x;
+    d.y0 = d.y;
+  });
+
+  // Creates a curved (diagonal) path from parent to the child nodes
+  function diagonal(s, d) {
+
+    path = `M ${s.y} ${s.x}
+            C ${(s.y + d.y) / 2} ${s.x},
+              ${(s.y + d.y) / 2} ${d.x},
+              ${d.y} ${d.x}`
+
+    return path
+  }
+
+  // Toggle children on click.
+  function click(d) {
+    if (d.children) {
+        d._children = d.children;
+        d.children = null;
+      } else {
+        d.children = d._children;
+        d._children = null;
+      }
+    update(d);
+  }
+}
+
+</script>
+</body>
